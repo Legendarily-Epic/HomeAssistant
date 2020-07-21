@@ -1,0 +1,63 @@
+#Device is a Sonoff S31
+
+esphome:
+  name: 3dprinter_plug
+  platform: ESP8266
+  board: esp8285
+  arduino_version: 2.4.2
+
+wifi:
+  ssid: ""
+  password: ""
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "3Dprinter Plug Fallback Hotspot"
+    password: ""
+
+captive_portal:
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "3D Printer Plug Button"
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: "3D Printer Plug Status"
+
+sensor:
+  - platform: wifi_signal
+    name: "3D Printer Plug WiFi Signal"
+    update_interval: 60s
+  - platform: cse7766
+    current:
+      name: "3D Printer Plug Current"
+    voltage:
+      name: "3D Printer Plug Voltage"
+    power:
+      name: "3D Printer Plug Power"
+switch:
+  - platform: gpio
+    name: "3D Printer Plug Switch"
+    pin: GPIO12
+    id: relay
+
+status_led:
+  pin: GPIO13

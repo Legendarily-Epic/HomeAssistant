@@ -1,0 +1,30 @@
+sensor.yr_symbol:
+  friendly_name: Weather
+
+cover.garage:
+  device_class: garage
+  friendly_name: Garage
+
+light.hue_color_lamp_4:
+  friendly_name: Entry Light
+
+sensor.octoprint_time_elapsed_format:
+  icon: mdi:clock-start
+
+sensor.octoprint_time_remaining_format:
+  icon: mdi:clock-end
+
+switch.garage_light_switch_2:
+  icon: mdi:lightbulb
+
+switch.gym_light_switch:
+  icon: mdi:lightbulb
+
+sensor.ender3_actual_bed_temp:
+    friendly_name: Ender3 Bed Temp
+
+sensor.ender3_actual_tool0_temp:
+    friendly_name: Ender3 Extruder Temp
+
+script.1588216890620:
+  icon: mdi:weight-lifter

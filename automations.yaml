@@ -1,0 +1,151 @@
+- id: '1577229123649'
+  alias: Auto Close Garage Door At Night
+  trigger:
+  - entity_id: binary_sensor.garage_door
+    for: 00:10:00
+    platform: state
+    to: 'on'
+  condition:
+  - after: '20:00:00'
+    before: 06:00:00
+    condition: time
+  action:
+  - data:
+      entity_id: switch.garage_control
+    service: switch.turn_on
+- id: '1577653831239'
+  alias: Auto Garage Open for Bryan
+  trigger:
+  - entity_id: person.bryan
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.garage_door
+    state: 'off'
+  action:
+  - data: {}
+    entity_id: switch.garage_control
+    service: switch.turn_on
+- id: '1577663406953'
+  alias: Update Available Notification
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.updater
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Home Assistant {{ state_attr('binary_sensor.updater', 'newest_version')
+        }} is available.
+    service: notify.notify
+- id: '1578277691092'
+  alias: Turn on front house lights at sun set
+  description: ''
+  trigger:
+  - event: sunset
+    platform: sun
+  condition: []
+  action:
+  - service: script.monthly_color_scene
+  - delay: 00:00:01
+  - service: script.monthly_color_scene
+- id: '1578278216425'
+  alias: Turn off front house lights at 9pm
+  description: ''
+  trigger:
+  - at: '21:00:00'
+    platform: time
+  condition: []
+  action:
+  - device_id: 725ef391cfb3414bbe4380e3b596400e
+    domain: light
+    entity_id: light.hue_color_lamp_2
+    type: turn_off
+  - device_id: 348966e237474ac797a0e9d18dd3f840
+    domain: light
+    entity_id: light.hue_color_lamp_3
+    type: turn_off
+  - device_id: 3b5ca345770345658fd50b7030419ff9
+    domain: light
+    entity_id: light.hue_color_lamp_4
+    type: turn_off
+  - delay: 00:00:01
+  - device_id: 725ef391cfb3414bbe4380e3b596400e
+    domain: light
+    entity_id: light.hue_color_lamp_2
+    type: turn_off
+  - device_id: 348966e237474ac797a0e9d18dd3f840
+    domain: light
+    entity_id: light.hue_color_lamp_3
+    type: turn_off
+  - device_id: 3b5ca345770345658fd50b7030419ff9
+    domain: light
+    entity_id: light.hue_color_lamp_4
+    type: turn_off
+- id: '1587519554430'
+  alias: Turn on coach lights when garage opens past 9pm
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.garage_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - after: '21:00:00'
+    before: 03:00:00
+    condition: time
+  action:
+  - entity_id: script.monthly_color_scene
+    service: script.monthly_color_scene
+  - device_id: 985edb2ecbb340f9940b8b42666e26cf
+    domain: switch
+    entity_id: switch.garage_light_switch_2
+    type: turn_on
+- id: '1587519767443'
+  alias: Turn off coach lights when garage closes past 9pm
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.garage_door
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - after: '21:00:00'
+    before: 03:00:00
+    condition: time
+  action:
+  - device_id: 725ef391cfb3414bbe4380e3b596400e
+    domain: light
+    entity_id: light.hue_color_lamp_2
+    type: turn_off
+  - device_id: 348966e237474ac797a0e9d18dd3f840
+    domain: light
+    entity_id: light.hue_color_lamp_3
+    type: turn_off
+  - device_id: 3b5ca345770345658fd50b7030419ff9
+    domain: light
+    entity_id: light.hue_color_lamp_4
+    type: turn_off
+  - device_id: 985edb2ecbb340f9940b8b42666e26cf
+    domain: switch
+    entity_id: switch.garage_light_switch_2
+    type: turn_off
+- id: '1590814731339'
+  alias: Auto 3D Printer Shutdown
+  description: Shuts down when job completed and end temp cools down
+  trigger:
+  - entity_id: sensor.ender3_job_percentage
+    platform: state
+    to: '100.0'
+  condition:
+  - below: '110'
+    condition: numeric_state
+    entity_id: sensor.ender3_actual_tool0_temp
+  action:
+  - device_id: 3f0e802c08194afd80746ba3ec665935
+    domain: switch
+    entity_id: switch.3d_printer_plug_switch
+    type: turn_off

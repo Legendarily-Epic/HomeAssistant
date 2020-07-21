@@ -1,0 +1,46 @@
+#Device is a Sonoff SV (built in relay) and utilizing a reed switch door state 
+
+esphome:
+  name: garage_door
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: ""
+  password: ""
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Garage Door Fallback Hotspot"
+    password: ""
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Garage Door"
+    device_class: garage_door
+
+switch:
+  - platform: gpio
+    pin: GPIO12
+    id: relay
+  - platform: template
+    icon: "mdi:arrow-up-down-bold-outline"
+    name: "Garage Control"
+    turn_on_action:
+    - switch.turn_on: relay
+    - delay: 500ms
+    - switch.turn_off: relay

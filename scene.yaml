@@ -1,0 +1,103 @@
+#Utilizing scenes to change colors of house front phillips hue lights for holidays
+
+- name: month_standard_colors
+  entities:
+     group.outdoor_front_lights:
+         state: 'on'
+         kelvin: 2700
+         brightness: 200
+
+- name: month_RWB_colors
+  entities:
+      light.hue_color_lamp_3:
+          state: 'on'
+          #color_name: 'Red'
+          rgb_color: [204,0,0]
+          brightness: 200
+      light.hue_color_lamp_2:
+          state: 'on'
+          #color_name: 'Cream'
+          rgb_color: [255,253,208]
+          brightness: 200
+      light.hue_color_lamp_4:
+          state: 'on'
+          color_name: 'Blue'
+          brightness: 200
+
+- name: month_valentine_colors
+  entities:
+       group.outdoor_front_lights:
+           state: 'on'
+           color_name: 'Crimson'
+           brightness: 200
+
+- name: month_st_patty_colors
+  entities:
+       group.outdoor_front_lights:
+           state: 'on'
+           #color_name: 'Dark Spring Green'
+           color_name: 'Green'
+           brightness: 200
+
+- name: month_easter_colors
+  entities:
+      light.hue_color_lamp_2:
+          state: 'on'
+          # color_name: 'fuchsia'
+          rgb_color: [255,0,255]
+          brightness: 200
+      light.hue_color_lamp_3:
+          state: 'on'
+          color_name: 'yellow'
+          brightness: 200
+      light.hue_color_lamp_4:
+          state: 'on'
+          #color_name: 'aqua'
+          rgb_color: [0,255,255]
+          brightness: 200
+
+- name: month_mothers_day_colors
+  entities:
+      group.outdoor_front_lights:
+          state: 'on'
+          # color_name: 'fuchsia'
+          rgb_color: [255,0,255]
+          brightness: 200
+
+- name: month_halloween_colors
+  entities:
+      light.hue_color_lamp_2:
+          state: 'on'
+          color_name: 'orange'
+          brightness: 200
+      light.hue_color_lamp_3:
+          state: 'on'
+          color_name: 'orange'
+          brightness: 200
+      light.hue_color_lamp_4:
+          state: 'on'
+          #color_name: 'purple'
+          rgb_color: [96,0,128]
+          brightness: 200
+
+- name: month_thanksgiving_colors
+  entities:
+       group.outdoor_front_lights:
+           state: 'on'
+           color_name: 'orange'
+           brightness: 200
+
+- name: month_christmas_colors
+  entities:
+      light.hue_color_lamp_2:
+          state: 'on'
+          color_name: 'green'
+          brightness: 200
+      light.hue_color_lamp_3:
+          state: 'on'
+          color_name: 'green'
+          brightness: 200
+      light.hue_color_lamp_4:
+          state: 'on'
+          color_name: 'red'
+          brightness: 200

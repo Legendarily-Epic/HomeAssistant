@@ -1,0 +1,95 @@
+#Device is a D1 Mini utilizing a IR transmitting LED meant to talk with a Sony TV and a JBL Sound Bar
+
+esphome:
+  name: garage_tv
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: ""
+  password: ""
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Garage Tv Fallback Hotspot"
+    password: ""
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+
+remote_transmitter:
+  pin: D6
+  carrier_duty_percent: 50%
+
+switch:
+  - platform: template
+    name: "TV Power"
+    id: "tv_power"
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xA90
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Soundbar Power"
+    id: "soundbar_power"
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x212E
+        command: 0xFF00
+        repeat:
+          times: 3
+  - platform: template
+    name: "Soundbar Source"
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x10E
+        command: 0x9D62
+  - platform: template
+    name: "Soundbar Volume Up"
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x10E
+        command: 0xE31C
+  - platform: template
+    name: "Soundbar Volume Down"
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x10E
+        command: 0x13EC
+  - platform: template
+    name: "Soundbar Bass Up"
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x10E
+        command: 0x37C8
+  - platform: template
+    name: "Soundbar Bass Down"
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x10E
+        command: 0xB748
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D2
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Power Button"
+    filters:
+      - delayed_on: 10ms
+    on_press:
+      then:
+        - switch.turn_on: tv_power
+        - delay: 500ms
+        - switch.turn_on: soundbar_power

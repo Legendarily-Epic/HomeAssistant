@@ -1,0 +1,37 @@
+#Monyly_color_scene checks to see if it is a holiday and if so which scene to run
+monthly_color_scene:
+  sequence:
+  - service: scene.turn_on
+    data_template:
+      entity_id: scene.month_ {%- if now().strftime("%m%d")|int >= 210 and now().strftime("%m%d")|int
+        <= 214-%} valentine {%- elif now().strftime("%m%d")|int >= 315 and now().strftime("%m%d")|int
+        <= 317-%} st_patty {%- elif now().strftime("%m%d")|int >= 410 and now().strftime("%m%d")|int
+        <= 413-%} easter {%- elif now().strftime("%m%d")|int == 510 -%} mothers_day
+        {%- elif now().strftime("%m%d")|int == 525 -%} RWB {%- elif now().strftime("%m%d")|int
+        >= 704 and now().strftime("%m%d")|int <= 704-%} RWB {%- elif now().strftime("%m%d")|int
+        >= 1015 and now().strftime("%m%d")|int <= 1031-%} halloween {%- elif now().strftime("%m%d")|int
+        == 1111 -%} RWB {%- elif now().strftime("%m%d")|int >= 1123 and now().strftime("%m%d")|int
+        <= 1127-%} thanksgiving {%- elif now().strftime("%m%d")|int >= 1201 and now().strftime("%m%d")|int
+        <= 1231-%} christmas {%- else -%} standard {%- endif -%}_colors
+
+#Script to toggle everything on/off in the gym
+'1588216890620':
+  alias: Workout
+  sequence:
+  - device_id: 9835e92260c442518c2e2522b15fc792
+    domain: switch
+    entity_id: switch.gym_light_switch
+    type: toggle
+  - device_id: 5e53069a83954e2f9200c7bcf95bbecc
+    domain: switch
+    entity_id: switch.gym_air_switch
+    type: toggle
+  - device_id: 73a62fd7974e4de0b3f7010c82826a88
+    domain: switch
+    entity_id: switch.soundbar_power_2
+    type: toggle
+  - delay: 00:00:01
+  - device_id: 73a62fd7974e4de0b3f7010c82826a88
+    domain: switch
+    entity_id: switch.tv_power_2
+    type: toggle

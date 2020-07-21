@@ -1,0 +1,67 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude
+  longitude: !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret timezone
+  customize: !include customize.yaml
+
+
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+#http:
+   #base_url:
+# Text to speech
+tts:
+  - platform: google_translate
+
+# Sensors
+sensor:
+  # Weather prediction
+  - platform: yr
+  - platform: template
+    sensors:
+      octoprint_time_elapsed_format:
+        friendly_name: 'Printing Time Elapsed'
+        value_template: "{{ states('sensor.ender3_time_elapsed') | int | timestamp_custom('%H:%M:%S', 0) }}"
+
+      octoprint_time_remaining_format:
+        friendly_name: 'Printing Time Remaining'
+        value_template: "{{ states('sensor.ender3_time_remaining') | int |timestamp_custom('%H:%M:%S', 0) }}"
+
+
+octoprint:
+  host: !secret octo_host
+  api_key: !secret octo_api_key
+  name: Ender3
+  number_of_tools: 1
+  bed: true
+  sensors:
+    monitored_conditions:
+      - 'Current State'
+      - 'Job Percentage'
+      - 'Time Elapsed'
+      - 'Time Remaining'
+      - 'Temperatures'
+
+camera:
+  - platform: mjpeg
+    name: OctoPrint
+    still_image_url: !secret camera_still_image_url
+    mjpeg_url: !secret camera_mjpeg_url
+
+pi_hole:
+  - host: !secret pi_hole_host
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scene.yaml

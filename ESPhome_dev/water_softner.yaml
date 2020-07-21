@@ -1,0 +1,61 @@
+#Device is a D1 Mini utilizing a DHT11 temp and humnidity sensor as well as a Ultrassonic sensor
+#Outputs water softner salt level, and garage temp and humidity.
+
+esphome:
+  name: water_softner
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: ""
+  password: ""
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Water Softner Fallback Hotspot"
+    password: ""
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+sensor:
+  - platform: dht
+    model: DHT11
+    pin: D2
+    temperature:
+      name: "Garage Temperature"
+      filters:
+      - lambda: return x * (9.0/5.0) + 32.0;
+      unit_of_measurement: "°F"
+    humidity:
+      name: "Garage Humidity"
+    update_interval: 60s
+
+
+
+  - platform: ultrasonic
+    trigger_pin: D6
+    echo_pin: D7
+    name: "Water Softner Salt Level"
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    update_interval: 60s
+    #icon: "mdi:water-percent"
+
+    # tank height: 200cm
+    # height from full to sensor: 12cm (essentially sensors minimum distance)
+    # full tank: 58cm
+    # current reading: x
+    # ergo: used = (x - 22)
+    # ergo: remaining = (180 - used)
+    # ergo: percent = (remaining / 180) * 100
+    filters:
+      - lambda: return (1-((x-.12)/.58))*100;
+      - filter_out: nan
