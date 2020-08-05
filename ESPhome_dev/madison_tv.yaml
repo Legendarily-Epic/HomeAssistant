@@ -1,0 +1,44 @@
+#D1 mini with ir transmitting LED to control a Samsung TV.
+
+esphome:
+  name: madison_tv
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: !secret madison_tv_ip
+    gateway: !secret gateway
+    subnet: !secret subnet
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Madison Tv Fallback Hotspot"
+    password: "Ie1Q5Avv4H42"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+remote_transmitter:
+  pin: D6
+  carrier_duty_percent: 50%
+
+switch:
+  - platform: template
+    name: "Madison TV Power"
+    id: "madison_tv_power"
+    icon: mdi:power
+    turn_on_action:
+      remote_transmitter.transmit_samsung:
+        data: 0xE0E040BF
+    turn_off_action:
+      remote_transmitter.transmit_samsung:
+        data: 0xE0E040BF

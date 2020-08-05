@@ -7,8 +7,8 @@ esphome:
   arduino_version: 2.4.2
 
 wifi:
-  ssid: ""
-  password: ""
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
   #manual_ip:
     # Set this to the IP of the ESP
     #static_ip:
@@ -20,7 +20,7 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Garage Plug Fallback Hotspot"
-    password: ""
+    password: "67H9hLumPj28"
 
 captive_portal:
 

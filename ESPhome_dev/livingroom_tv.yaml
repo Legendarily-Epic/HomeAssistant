@@ -1,0 +1,210 @@
+# D1 mini with ir transmitter to control Sony TV and Yamaha reciever
+
+esphome:
+  name: livingroom_tv
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: !secret livingroom_tv_ip
+    gateway: !secret gateway
+    subnet: !secret subnet
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Livingroom Tv Fallback Hotspot"
+    password: "yX2b8tRmgTSI"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+
+remote_transmitter:
+  pin: D6
+  carrier_duty_percent: 50%
+  
+#Sony TV
+switch:
+  - platform: template
+    name: "Living Room TV Power"
+    id: "livingroom_tv_power"
+    icon: mdi:power
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xA90
+        nbits: 12
+        repeat:
+          times: 3
+    turn_off_action:
+      remote_transmitter.transmit_sony:
+        data: 0xA90
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Input"
+    id: "livingroom_tv_input"
+    icon: mdi:import
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xA50
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Up Arrow"
+    id: "livingroom_tv_up_arrow"
+    icon: mdi:menu-up
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0x2F0
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Down Arrow"
+    id: "livingroom_tv_down_arrow"
+    icon: mdi:menu-down
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xAF0
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Right Arrow"
+    id: "livingroom_tv_right_arrow"
+    icon: mdi:menu-right
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xCD0
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Left Arrow"
+    id: "livingroom_tv_left_arrow"
+    icon: mdi:menu-left
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xCD0
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Enter"
+    id: "livingroom_tv_enter"
+    icon: mdi:check
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0xA70
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Menu"
+    id: "livingroom_tv_menu"
+    icon: mdi:menu
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0x070
+        nbits: 12
+        repeat:
+          times: 3
+  - platform: template
+    name: "Living Room TV Return"
+    id: "livingroom_tv_return"
+    icon: mdi:keyboard-return
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 0x62E9
+        nbits: 15
+        repeat:
+          times: 3
+# Yamaha Reciever
+  - platform: template
+    name: "Living Room Reciever Power"
+    id: "livingroom_reciever_power"
+    icon: mdi:power
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x7E81
+        command: 0x54AB
+    turn_off_action:
+      remote_transmitter.transmit_nec:
+        address: 0x7E81
+        command: 0x54AB
+  - platform: template
+    name: "Living Room Reciever Volume Up"
+    id: "livingroom_reciever_volume_up"
+    icon: mdi:volume-plus
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0x58A7
+  - platform: template
+    name: "Living Room Reciever Volume Down"
+    id: "livingroom_reciever_volume_down"
+    icon: mdi:volume-minus
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0xD827
+  - platform: template
+    name: "Living Room Reciever HDMI 1"
+    id: "livingroom_reciever_hdmi1"
+    icon: mdi:video-input-hdmi
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0xE21C
+  - platform: template
+    name: "Living Room Reciever HDMI 2"
+    id: "livingroom_reciever_hdmi2"
+    icon: mdi:video-input-hdmi
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0x52AC
+  - platform: template
+    name: "Living Room Reciever HDMI 3"
+    id: "livingroom_reciever_hdmi3"
+    icon: mdi:video-input-hdmi
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0xB24C
+  - platform: template
+    name: "Living Room Reciever Scene PS4"
+    id: "livingroom_reciever_scene_ps4"
+    icon: mdi:playstation
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0x00FE
+  - platform: template
+    name: "Living Room Reciever Scene Fire Stick"
+    id: "livingroom_reciever_scene_firestick"
+    icon: mdi:amazon
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0xC03E
+  - platform: template
+    name: "Living Room Reciever Scene Radio"
+    id: "livingroom_reciever_scene_radio"
+    icon: mdi:radio-fm
+    turn_on_action:
+      remote_transmitter.transmit_nec:
+        address: 0x5EA1
+        command: 0x906E

@@ -1,4 +1,3 @@
-#Monyly_color_scene checks to see if it is a holiday and if so which scene to run
 monthly_color_scene:
   sequence:
   - service: scene.turn_on
@@ -13,8 +12,6 @@ monthly_color_scene:
         == 1111 -%} RWB {%- elif now().strftime("%m%d")|int >= 1123 and now().strftime("%m%d")|int
         <= 1127-%} thanksgiving {%- elif now().strftime("%m%d")|int >= 1201 and now().strftime("%m%d")|int
         <= 1231-%} christmas {%- else -%} standard {%- endif -%}_colors
-
-#Script to toggle everything on/off in the gym
 '1588216890620':
   alias: Workout
   sequence:

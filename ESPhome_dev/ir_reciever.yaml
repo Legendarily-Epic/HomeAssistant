@@ -1,0 +1,32 @@
+#Dediated D1 mini with ir reciever used to get remote ir codes via log.
+
+esphome:
+  name: ir_reciever
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ir Reciever Fallback Hotspot"
+    password: "bn0IZh51tnBa"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+
+remote_receiver:
+  pin:
+    number: D6
+    inverted: true
+  dump: all

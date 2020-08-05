@@ -1,5 +1,5 @@
 #Device is a D1 Mini utilizing a DHT11 temp and humnidity sensor as well as a Ultrassonic sensor
-#Outputs water softner salt level, and garage temp and humidity.
+#Outputs water softner salt level, garage temp, and humidity.
 
 esphome:
   name: water_softner
@@ -7,13 +7,13 @@ esphome:
   board: d1_mini
 
 wifi:
-  ssid: ""
-  password: ""
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Water Softner Fallback Hotspot"
-    password: ""
+    password: "9VGE8UGMpz9o"
 
 captive_portal:
 

@@ -13,6 +13,10 @@
   - data:
       entity_id: switch.garage_control
     service: switch.turn_on
+  - data:
+      message: Garage door was left open and has now been closed
+      title: Garage Door Closed
+    service: notify.mobile_app_ricks_iphone
 - id: '1577653831239'
   alias: Auto Garage Open for Bryan
   trigger:
@@ -27,6 +31,10 @@
   - data: {}
     entity_id: switch.garage_control
     service: switch.turn_on
+  - data:
+      message: Bryan has opened the garage
+      title: Bryan is Home
+    service: notify.mobile_app_ricks_iphone
 - id: '1577663406953'
   alias: Update Available Notification
   description: ''
@@ -41,6 +49,10 @@
       message: Home Assistant {{ state_attr('binary_sensor.updater', 'newest_version')
         }} is available.
     service: notify.notify
+  - data:
+      message: Home Assistant update is now available
+      title: Home Assistant Update
+    service: notify.mobile_app_ricks_iphone
 - id: '1578277691092'
   alias: Turn on front house lights at sun set
   description: ''
@@ -137,15 +149,49 @@
   alias: Auto 3D Printer Shutdown
   description: Shuts down when job completed and end temp cools down
   trigger:
-  - entity_id: sensor.ender3_job_percentage
+  - entity_id: sensor.ender3_current_state
+    for: 00:05:00
+    from: Finishing
     platform: state
-    to: '100.0'
-  condition:
-  - below: '110'
-    condition: numeric_state
-    entity_id: sensor.ender3_actual_tool0_temp
+    to: Operational
+  - entity_id: sensor.ender3_current_state
+    for: 00:05:00
+    from: Printing
+    platform: state
+    to: Operational
+  condition: []
   action:
-  - device_id: 3f0e802c08194afd80746ba3ec665935
+  - device_id: 69b75c6372d04df69157b366fb275dac
     domain: switch
     entity_id: switch.3d_printer_plug_switch
     type: turn_off
+  - data:
+      message: Print has completed and printer has been shut off
+      title: 3D Printer Shut Down
+    service: notify.mobile_app_ricks_iphone
+- id: '1595300577516'
+  alias: Action Garage Door
+  description: Toggle garage door from event fired from ios
+  trigger:
+  - event_data:
+      actionID: E605CA6B-D41D-4CD4-BE07-ED16B2519C13
+    event_type: ios.action_fired
+    platform: event
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.garage_control
+    service: switch.turn_on
+- id: '1595994176100'
+  alias: Water Softner Salt Level Notification
+  description: Notification to phone when salt level is below 10%
+  trigger:
+  - below: '11'
+    entity_id: sensor.water_softner_salt_level
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Water Softner salt level is below 11%. Time to buy more salt!
+      title: Salt Level Low
+    service: notify.mobile_app_ricks_iphone

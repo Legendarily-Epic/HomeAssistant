@@ -20,6 +20,18 @@ switch.garage_light_switch_2:
 switch.gym_light_switch:
   icon: mdi:lightbulb
 
+switch.3d_printer_plug_switch:
+  icon: mdi:power
+
+switch.tv_power_2:
+  icon: mdi:power
+
+switch.soundbar_power_2:
+  icon: mdi:power
+
+switch.soundbar_volume_up_2:
+  icon: mdi:volume-plus
+
 sensor.ender3_actual_bed_temp:
     friendly_name: Ender3 Bed Temp
 
