@@ -1,9 +1,9 @@
-#Device is a D1 Mini with realy hat and utilizing a reed switch door state 
+#Device is a Sonoff SV (built in relay) and utilizing a reed switch door state 
 
 esphome:
   name: garage_door
   platform: ESP8266
-  board: d1_mini
+  board: esp01_1m
 
 wifi:
   ssid: !secret wifi_ssid
@@ -27,7 +27,7 @@ ota:
 binary_sensor:
   - platform: gpio
     pin:
-      number: D6
+      number: GPIO14
       mode: INPUT_PULLUP
       inverted: True
     name: "Garage Door"
@@ -35,7 +35,7 @@ binary_sensor:
 
 switch:
   - platform: gpio
-    pin: D1
+    pin: GPIO12
     id: relay
   - platform: template
     icon: "mdi:arrow-up-down-bold-outline"
