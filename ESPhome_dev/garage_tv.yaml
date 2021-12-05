@@ -9,10 +9,10 @@ esphome:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  manual_ip:
-    static_ip: !secret garage_tv_ip
-    gateway: !secret gateway
-    subnet: !secret subnet
+  #manual_ip:
+    #static_ip: !secret garage_tv_ip
+    #gateway: !secret gateway
+    #subnet: !secret subnet
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
@@ -122,7 +122,7 @@ switch:
 binary_sensor:
   - platform: gpio
     pin:
-      number: D0
+      number: D7
       mode: INPUT_PULLUP
       inverted: true
     name: "Power Button"
@@ -147,8 +147,8 @@ i2c:
 display:
   - platform: ssd1306_i2c
     model: "SH1106 128x64"
-    reset_pin: D3
-    address: 0x3C
+    #reset_pin: D3
+    #address: 0x3C
     lambda: |-
       
       if (id(gym_switch).state) {
