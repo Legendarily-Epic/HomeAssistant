@@ -158,12 +158,12 @@ display:
         // Print time in HH:MM format
         it.strftime(0, 60, id(font2), TextAlign::BASELINE_LEFT, "%H:%M", id(esptime).now());
   
-        // Print inside temperature (from homeassistant sensor)
+        // Print garage temperature (from homeassistant sensor)
         if (id(gym_temperature).has_state()) {
           it.printf(127, 23, id(font3), TextAlign::TOP_RIGHT , "%.1f°", id(gym_temperature).state);
         }
   
-        // Print outside temperature (from homeassistant sensor)
+        // Print garage humidity (from homeassistant sensor)
         if (id(gym_humidity).has_state()) {
           it.printf(127, 60, id(font3), TextAlign::BASELINE_RIGHT , "%.1f%%", id(gym_humidity).state);
         }
